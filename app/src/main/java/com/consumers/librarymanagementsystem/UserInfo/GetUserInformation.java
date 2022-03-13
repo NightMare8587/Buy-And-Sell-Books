@@ -22,7 +22,7 @@ public class GetUserInformation extends AppCompatActivity {
     CheckBox horror,romance,scifi,fictional,bio,selfhelp,motivational,mystry;
     boolean horrorB,romanceB,scifiB,fictionalB,bioB,selfB,motiB,mysB;
     Button continueB;
-    int count = 1;
+    int count = 0;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     DatabaseReference databaseReference;
     @Override
@@ -37,12 +37,15 @@ public class GetUserInformation extends AppCompatActivity {
             finish();
         }
         SharedPreferences.Editor editor = BooksPref.edit();
-        editor.putString("horror","true");
         continueB.setOnClickListener(click -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(GetUserInformation.this);
             builder.setTitle("Confirmation").setMessage("Do you wanna continue with your preferences")
                     .setPositiveButton("Yes", (dialogInterface, i) -> {
                         dialogInterface.dismiss();
+                        if(count == 0){
+                            Toast.makeText(this, "Choose at least 1 pref", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         if(count <= 4){
                             editor.putString("booksPref","yes");
                             editor.apply();
