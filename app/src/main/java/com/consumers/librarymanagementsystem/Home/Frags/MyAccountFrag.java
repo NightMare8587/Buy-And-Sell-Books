@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -20,13 +19,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import com.consumers.librarymanagementsystem.Home.SellBooks.SellYourBooks;
+import com.consumers.librarymanagementsystem.Home.SellBooks.Sell.SellYourBooks;
 import com.consumers.librarymanagementsystem.MainActivity;
 import com.consumers.librarymanagementsystem.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 
 import com.google.firebase.auth.FirebaseAuth;
 

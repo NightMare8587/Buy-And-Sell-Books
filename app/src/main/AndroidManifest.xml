@@ -24,7 +24,7 @@
             android:name=".Home.SellBooks.SellingBooks"
             android:exported="false" />
         <activity
-            android:name=".Home.SellBooks.SellYourBooks"
+            android:name=".Home.SellBooks.Sell.SellYourBooks"
             android:exported="false" />
         <activity
             android:name=".UserInfo.GetUserInformation"

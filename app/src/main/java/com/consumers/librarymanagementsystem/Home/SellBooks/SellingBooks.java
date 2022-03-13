@@ -156,7 +156,7 @@ public class SellingBooks extends AppCompatActivity {
                         SharedPreferences sharedPreferences = getSharedPreferences("loginInfo",MODE_PRIVATE);
                         BooksInfoDB booksInfoDB = new BooksInfoDB(genre,uri+"",sharedPreferences.getString("name",""),dishAuth.getUid() + "",sharedPreferences.getString("email",""),prices);
                         databaseReference.child(genre).child(nameOfBooks).setValue(booksInfoDB);
-                        MyBookDB myBookDB = new MyBookDB(genre,prices,"0");
+                        MyBookDB myBookDB = new MyBookDB(genre,prices,"0",uri + "");
                         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().getRoot().child("Users").child(dishAuth.getUid()).child("My Books");
                         myRef.child(nameOfBooks).setValue(myBookDB);
                         finish();
