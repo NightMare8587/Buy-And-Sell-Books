@@ -4,7 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/91807/AndroidStudioProjects/LibraryManagementSystem/app/src/main/res/layout/activity_get_user_information.xml" value="0.264" />
+        <entry key="..\:/Users/91807/AndroidStudioProjects/LibraryManagementSystem/app/src/main/res/layout/activity_home_screen.xml" value="0.176" />
         <entry key="..\:/Users/91807/AndroidStudioProjects/LibraryManagementSystem/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/91807/AndroidStudioProjects/LibraryManagementSystem/app/src/main/res/layout/books_adapter_layout.xml" value="0.4" />
+        <entry key="..\:/Users/91807/AndroidStudioProjects/LibraryManagementSystem/app/src/main/res/layout/buy_books_layout.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/91807/AndroidStudioProjects/LibraryManagementSystem/app/src/main/res/layout/my_account_layout.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/91807/AndroidStudioProjects/LibraryManagementSystem/app/src/main/res/layout/search_books_card_view.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/91807/AndroidStudioProjects/LibraryManagementSystem/app/src/main/res/layout/search_books_layout.xml" value="0.22826086956521738" />
       </map>
     </option>
   </component>
