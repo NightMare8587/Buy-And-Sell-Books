@@ -21,6 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
+            android:name=".Home.SellBooks.SellingBooks"
+            android:exported="false" />
+        <activity
             android:name=".Home.SellBooks.SellYourBooks"
             android:exported="false" />
         <activity
