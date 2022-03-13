@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1029328314989",
+    "firebase_url": "https://studentmanagementsystem-ad456-default-rtdb.firebaseio.com",
+    "project_id": "studentmanagementsystem-ad456",
+    "storage_bucket": "studentmanagementsystem-ad456.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029328314989:android:f38a8c84ddf5b6d07a9564",
+        "android_client_info": {
+          "package_name": "com.consumers.librarymanagementsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029328314989-61t7kusnsr5fdridc8qgfbi2sgnuai0n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.consumers.librarymanagementsystem",
+            "certificate_hash": "877b9920cdea1cc6c608d298a7870606764de36b"
+          }
+        },
+        {
+          "client_id": "1029328314989-o0jtuf3v1m70n4j3mudda1as74vhg80l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCWRTXYxig05aZLc7IrltGVR79TV2Wqk8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029328314989-ffneht0ddk3ctl1d7ebp3tpleo1b0lab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

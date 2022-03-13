@@ -1,7 +1,33 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-plugins {
-    id 'com.android.application' version '7.1.2' apply false
-    id 'com.android.library' version '7.1.2' apply false
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven{
+            url "https://s3-ap-southeast-1.amazonaws.com/godel-release/godel/"
+        }
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath 'com.google.gms:google-services:4.3.10'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://jitpack.io"
+        }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven{
+            url "https://s3-ap-southeast-1.amazonaws.com/godel-release/godel/"
+        }
+        maven { url "https://artifactory.paytm.in/libs-release-local" }
+        maven { url 'https://maven.cashfree.com/release'}
+    }
 }
 
 task clean(type: Delete) {

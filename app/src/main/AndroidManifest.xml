@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LibraryManagementSystem">
         <activity
+            android:name=".Home.HomeScreen"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
