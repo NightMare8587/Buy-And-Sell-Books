@@ -15,6 +15,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.consumers.librarymanagementsystem.Home.HomeScreen;
+import com.consumers.librarymanagementsystem.UserInfo.GetUserInformation;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     GoogleSignInClient client;
     GoogleSignInOptions gso;
     DatabaseReference reference;
-    FirebaseAuth loginAuth;
+    FirebaseAuth loginAuth = FirebaseAuth.getInstance();
     SignInButton signInButton;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         checkPermissions();
         if(currentUser != null){
-            startActivity(new Intent(MainActivity.this,HomeScreen.class));
+            startActivity(new Intent(MainActivity.this,GetUserInformation.class));
             finish();
         }
         sharedPreferences = getSharedPreferences("loginInfo",MODE_PRIVATE);
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void checkPermissions() {
-        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION+ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) + ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)) != PackageManager.PERMISSION_GRANTED){
+        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE+ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) + ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
         }
     }
@@ -111,18 +112,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void getSignInInformation() {
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-        if (acct != null) {
-            String personName = acct.getDisplayName();
-            String personFamilyName = acct.getFamilyName();
-            String personEmail = acct.getEmail();
-            editor.putString("email",personEmail);
-            editor.putString("name",personName);
-            editor.apply();
-            Log.i("info",personName+ " " + personEmail + " " + personFamilyName);
-        }
-    }
+
 
     private void createFirebaseAuthID(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
@@ -135,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
                         FirebaseUser user = loginAuth.getCurrentUser();
                         assert user != null;
                         loginAuth.updateCurrentUser(user);
+                        reference = FirebaseDatabase.getInstance().getReference().getRoot();
                         reference.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -151,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
-                        startActivity(new Intent(MainActivity.this, HomeScreen.class));
+                        startActivity(new Intent(MainActivity.this, GetUserInformation.class));
                         finish();
 //                            updateUI(user);
                     } else {
@@ -160,5 +151,17 @@ public class MainActivity extends AppCompatActivity {
 //                            updateUI(null);
                     }
                 });
+    }
+    private void getSignInInformation() {
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if (acct != null) {
+            String personName = acct.getDisplayName();
+            String personFamilyName = acct.getFamilyName();
+            String personEmail = acct.getEmail();
+            editor.putString("email",personEmail);
+            editor.putString("name",personName);
+            editor.apply();
+            Log.i("info",personName+ " " + personEmail + " " + personFamilyName);
+        }
     }
 }
