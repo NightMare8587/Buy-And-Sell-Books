@@ -1,4 +1,4 @@
-package com.consumers.librarymanagementsystem.Home;
+package com.consumers.librarymanagementsystem.Home.Frags;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.consumers.librarymanagementsystem.Home.BooksAdapter;
 import com.consumers.librarymanagementsystem.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -17,12 +18,16 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.Holder> {
+public class AllBooksAdp extends RecyclerView.Adapter<AllBooksAdp.Holder> {
     List<String> image;
     List<String> bookName = new ArrayList<>();
     List<String> genre = new ArrayList<>();
+    List<String> price = new ArrayList<>();
+    List<String> sellerEmail = new ArrayList<>();
+    List<String> sellerID = new ArrayList<>();
+    List<String> sellerName = new ArrayList<>();
 
-    public BooksAdapter(List<String> image, List<String> bookName, List<String> genre, List<String> price, List<String> sellerEmail, List<String> sellerID, List<String> sellerName) {
+    public AllBooksAdp(List<String> image, List<String> bookName, List<String> genre, List<String> price, List<String> sellerEmail, List<String> sellerID, List<String> sellerName) {
         this.image = image;
         this.bookName = bookName;
         this.genre = genre;
@@ -32,10 +37,6 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.Holder> {
         this.sellerName = sellerName;
     }
 
-    List<String> price = new ArrayList<>();
-    List<String> sellerEmail = new ArrayList<>();
-    List<String> sellerID = new ArrayList<>();
-    List<String> sellerName = new ArrayList<>();
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

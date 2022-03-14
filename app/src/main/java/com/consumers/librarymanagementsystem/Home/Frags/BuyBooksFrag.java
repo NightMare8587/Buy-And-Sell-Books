@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.consumers.librarymanagementsystem.Home.BooksAdapter;
 import com.consumers.librarymanagementsystem.Home.HomeScreen;
 import com.consumers.librarymanagementsystem.R;
 import com.google.firebase.database.DataSnapshot;
@@ -29,8 +30,21 @@ import java.util.List;
 public class BuyBooksFrag extends Fragment {
     RecyclerView myPref;
     LinearLayoutManager linearLayoutManager;
+    LinearLayoutManager linearLayoutManager1;
     List<String> image = new ArrayList<>();
-    List<String> bookName = new ArrayList<>();
+    List<String> bookName = new ArrayList<>();List<String> image1 = new ArrayList<>();
+    List<String> bookName1 = new ArrayList<>();
+    DatabaseReference allBooksRef;
+    List<String> genre = new ArrayList<>();
+    List<String> genre1 = new ArrayList<>();
+    RecyclerView recyclerView;
+    List<String> price = new ArrayList<>();
+    List<String> sellerEmail = new ArrayList<>();
+    List<String> sellerID = new ArrayList<>();
+    List<String> sellerName = new ArrayList<>();List<String> price1 = new ArrayList<>();
+    List<String> sellerEmail1 = new ArrayList<>();
+    List<String> sellerID1 = new ArrayList<>();
+    List<String> sellerName1 = new ArrayList<>();
     SharedPreferences sharedPreferences;
     DatabaseReference databaseReference;
     @Nullable
@@ -43,15 +57,73 @@ public class BuyBooksFrag extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         linearLayoutManager = new LinearLayoutManager(view.getContext());
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);linearLayoutManager1 = new LinearLayoutManager(view.getContext());
+        linearLayoutManager1.setOrientation(RecyclerView.HORIZONTAL);
         myPref = view.findViewById(R.id.preferencesRecyclerView);
+        recyclerView = view.findViewById(R.id.allBooksRecyclerView);
         sharedPreferences = view.getContext().getSharedPreferences("BooksPref",MODE_PRIVATE);
         databaseReference = FirebaseDatabase.getInstance().getReference().getRoot().child("BooksDatabase");
+        allBooksRef = FirebaseDatabase.getInstance().getReference().getRoot().child("BooksDatabase");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
+                    bookName.clear();
+                    genre.clear();
+                    price.clear();
+                    image.clear();
+                    sellerName.clear();
+                    sellerID.clear();
+                    sellerEmail.clear();
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        if(sharedPreferences.contains(dataSnapshot.getKey())) {
+                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                bookName.add(dataSnapshot1.getKey());
+                                genre.add(dataSnapshot1.child("genre").getValue(String.class));
+                                price.add(dataSnapshot1.child("price").getValue(String.class));
+                                image.add(dataSnapshot1.child("imageURI").getValue(String.class));
+                                sellerID.add(dataSnapshot1.child("sellerID").getValue(String.class));
+                                sellerEmail.add(dataSnapshot1.child("sellerEmail").getValue(String.class));
+                                sellerName.add(dataSnapshot1.child("sellerName").getValue(String.class));
+                            }
+                        }
+                        myPref.setLayoutManager(linearLayoutManager);
+                        myPref.setAdapter(new BooksAdapter(image,bookName,genre,price,sellerEmail,sellerID,sellerName));
+                    }
+                }else
+                    Toast.makeText(view.getContext(), "No Books Available As per preferences", Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        allBooksRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    bookName1.clear();
+                    genre1.clear();
+                    price1.clear();
+                    image1.clear();
+                    sellerName1.clear();
+                    sellerID1.clear();
+                    sellerEmail1.clear();
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                            bookName1.add(dataSnapshot1.getKey());
+                            genre1.add(dataSnapshot1.child("genre").getValue(String.class));
+                            price1.add(dataSnapshot1.child("price").getValue(String.class));
+                            image1.add(dataSnapshot1.child("imageURI").getValue(String.class));
+                            sellerID1.add(dataSnapshot1.child("sellerID").getValue(String.class));
+                            sellerEmail1.add(dataSnapshot1.child("sellerEmail").getValue(String.class));
+                            sellerName1.add(dataSnapshot1.child("sellerName").getValue(String.class));
+                        }
+                        recyclerView.setLayoutManager(linearLayoutManager1);
+                        recyclerView.setAdapter(new AllBooksAdp(image1,bookName1,genre1,price1,sellerEmail1,sellerID1,sellerName1));
+                    }
                 }else
                     Toast.makeText(view.getContext(), "No Books Available", Toast.LENGTH_SHORT).show();
             }
