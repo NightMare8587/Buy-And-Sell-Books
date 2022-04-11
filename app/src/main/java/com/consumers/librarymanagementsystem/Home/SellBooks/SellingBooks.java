@@ -2,18 +2,22 @@ package com.consumers.librarymanagementsystem.Home.SellBooks;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -31,15 +35,17 @@ import com.google.firebase.storage.UploadTask;
 import java.util.Objects;
 
 public class SellingBooks extends AppCompatActivity {
-    EditText nameOfBook,price;
+    EditText nameOfBook,price,sellerName,publisherName;
     Spinner spinner;
-    String nameOfBooks,prices;
+    String nameOfBooks,prices,pubName,sellName,contactNum;
     boolean imageUploaded = false;
     Uri filepath;
     FirebaseAuth dishAuth = FirebaseAuth.getInstance();
     FirebaseStorage storage;
     StorageReference storageReference;
     Button image,sellBook;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     DatabaseReference databaseReference;
     DatabaseReference reference;
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -52,7 +58,11 @@ public class SellingBooks extends AppCompatActivity {
         nameOfBook = findViewById(R.id.editTextTextPersonName);
         price = findViewById(R.id.priceOfSellingBook);
         spinner = findViewById(R.id.spinner);
+        sellerName = findViewById(R.id.edittextAuthorNameBookSell);
+        publisherName = findViewById(R.id.editTextPublisherNameSellBook);
         storage = FirebaseStorage.getInstance();
+        sharedPreferences = getSharedPreferences("loginInfo",MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         storageReference = storage.getReference();
         databaseReference = FirebaseDatabase.getInstance().getReference().getRoot().child("BooksDatabase");
         reference = FirebaseDatabase.getInstance().getReference().getRoot().child("Users").child(Objects.requireNonNull(auth.getUid()));
@@ -63,6 +73,8 @@ public class SellingBooks extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(1);
+
+
 //        spinner.setOnItemClickListener((adapterView, view, i, l) -> {
 
 //        });
@@ -112,26 +124,60 @@ public class SellingBooks extends AppCompatActivity {
         });
 
         sellBook.setOnClickListener(click -> {
-            if(nameOfBook.length() == 0)
-                Toast.makeText(this, "Field can't be empty", Toast.LENGTH_SHORT).show();
-            else{
-                if(price.length() == 0)
-                {
-                    Toast.makeText(this, "Enter Some Price", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(!imageUploaded)
-                {
-                    Toast.makeText(this, "Upload Cover Page Of Book", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+            if(sharedPreferences.contains("phoneNumber")) {
+                contactNum = sharedPreferences.getString("phoneNumber","");
 
-                nameOfBooks = nameOfBook.getText().toString();
-                prices = price.getText().toString();
+                if (nameOfBook.length() == 0)
+                    Toast.makeText(this, "Field can't be empty", Toast.LENGTH_SHORT).show();
+                else {
+                    if (price.length() == 0) {
+                        Toast.makeText(this, "Enter Some Price", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!imageUploaded) {
+                        Toast.makeText(this, "Upload Cover Page Of Book", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (sellerName.length() == 0) {
+                        Toast.makeText(this, "Enter Author Name", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (publisherName.length() == 0) {
+                        Toast.makeText(this, "Enter Publisher Name", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                new UploadInBackground().execute();
+                    nameOfBooks = nameOfBook.getText().toString();
+                    prices = price.getText().toString();
+                    pubName = publisherName.getText().toString();
+                    sellName = sellerName.getText().toString();
+                    new UploadInBackground().execute();
+                }
+            }else{
+                Toast.makeText(this, "You need add your contact number", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(SellingBooks.this);
+                EditText editText = new EditText(SellingBooks.this);
+                editText.setHint("Enter Number Here");
+                LinearLayout linearLayout = new LinearLayout(SellingBooks.this);
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+                editText.setInputType(InputType.TYPE_CLASS_PHONE);
+                builder.setTitle("Dialog").setMessage("Enter Contact number below");
+                builder.setPositiveButton("Submit", (dialogInterface, i) -> {
+                    if(editText.length() == 10){
+                        editor.putString("phoneNumber",editText.getText().toString());
+                        editor.apply();
+                        Toast.makeText(SellingBooks.this, "Contact info saved successfully", Toast.LENGTH_SHORT).show();
+                        contactNum = editText.getText().toString();
+                    }else
+                        Toast.makeText(SellingBooks.this, "Enter valid 10 digit number", Toast.LENGTH_SHORT).show();
+
+                }).setNegativeButton("No, Wait", (dialogInterface, i) -> Toast.makeText(SellingBooks.this, "Cancelled", Toast.LENGTH_SHORT).show());
+                linearLayout.addView(editText);
+                builder.setView(linearLayout);
+                builder.create().show();
             }
         });
+
     }
 
     @Override
@@ -150,14 +196,14 @@ public class SellingBooks extends AppCompatActivity {
             try {
                 StorageReference reference = storageReference.child(dishAuth.getUid() + "/" + "Books" + "/" + nameOfBooks);
                 reference.putFile(filepath).addOnCompleteListener(task -> {
-                    Toast.makeText(SellingBooks.this, "Upload Complete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SellingBooks.this, "Upload Completed Successfully", Toast.LENGTH_SHORT).show();
                     StorageReference reference1 = storageReference.child(dishAuth.getUid() + "/" + "Books" + "/"  + nameOfBooks);
                     reference1.getDownloadUrl().addOnSuccessListener(uri -> {
                         SharedPreferences sharedPreferences = getSharedPreferences("loginInfo",MODE_PRIVATE);
-                        BooksInfoDB booksInfoDB = new BooksInfoDB(genre,uri+"",sharedPreferences.getString("name",""),dishAuth.getUid() + "",sharedPreferences.getString("email",""),prices);
+                        BooksInfoDB booksInfoDB = new BooksInfoDB(genre,uri+"",sharedPreferences.getString("name",""),dishAuth.getUid() + "",sharedPreferences.getString("email",""),prices,sellName,pubName,contactNum);
                         databaseReference.child(genre).child(nameOfBooks).setValue(booksInfoDB);
-                        MyBookDB myBookDB = new MyBookDB(genre,prices,"0",uri + "");
-                        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().getRoot().child("Users").child(dishAuth.getUid()).child("My Books");
+                        MyBookDB myBookDB = new MyBookDB(genre,prices,"0",uri + "",sellName,pubName,contactNum);
+                        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().getRoot().child("Users").child(Objects.requireNonNull(dishAuth.getUid())).child("My Books");
                         myRef.child(nameOfBooks).setValue(myBookDB);
                         finish();
                     });
