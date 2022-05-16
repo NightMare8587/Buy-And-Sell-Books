@@ -1,5 +1,6 @@
 package com.consumers.librarymanagementsystem.Home.Frags;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +9,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.consumers.librarymanagementsystem.Home.BooksAdapter;
+import com.consumers.librarymanagementsystem.Home.ExpandBooksDetails.GetBookDetails;
 import com.consumers.librarymanagementsystem.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -26,10 +29,16 @@ public class AllBooksAdp extends RecyclerView.Adapter<AllBooksAdp.Holder> {
     List<String> sellerEmail = new ArrayList<>();
     List<String> sellerID = new ArrayList<>();
     List<String> sellerName = new ArrayList<>();
+    List<String> authorName = new ArrayList<>();
+    List<String> publisherName = new ArrayList<>();
+    List<String> contactNumber = new ArrayList<>();
 
-    public AllBooksAdp(List<String> image, List<String> bookName, List<String> genre, List<String> price, List<String> sellerEmail, List<String> sellerID, List<String> sellerName) {
+    public AllBooksAdp(List<String> image, List<String> bookName, List<String> genre, List<String> price, List<String> sellerEmail, List<String> sellerID, List<String> sellerName,List<String> authorName,List<String> publisherName,List<String> contactNumber) {
         this.image = image;
         this.bookName = bookName;
+        this.contactNumber = contactNumber;
+        this.publisherName = publisherName;
+        this.authorName = authorName;
         this.genre = genre;
         this.price = price;
         this.sellerEmail = sellerEmail;
@@ -59,6 +68,19 @@ public class AllBooksAdp extends RecyclerView.Adapter<AllBooksAdp.Holder> {
             }
         });
         holder.textView.setText(bookName.get(position));
+        holder.cardView.setOnClickListener(click -> {
+            Intent intent = new Intent(click.getContext(), GetBookDetails.class);
+            intent.putExtra("genre",genre.get(position));
+            intent.putExtra("price",price.get(position));
+            intent.putExtra("authorName",authorName.get(position));
+            intent.putExtra("bookName",bookName.get(position));
+            intent.putExtra("imageUri",image.get(position));
+            intent.putExtra("sellerName",sellerName.get(position));
+            intent.putExtra("sellerID",sellerID.get(position));
+            intent.putExtra("contactNum",contactNumber.get(position));
+            intent.putExtra("publisherName",publisherName.get(position));
+            click.getContext().startActivity(intent);
+        });
     }
 
     @Override
@@ -69,11 +91,13 @@ public class AllBooksAdp extends RecyclerView.Adapter<AllBooksAdp.Holder> {
         ImageView imageView;
         ProgressBar progressBar;
         TextView textView;
+        CardView cardView;
         public Holder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.adapterImageView);
             textView = itemView.findViewById(R.id.bookNameTextAdapter);
             progressBar = itemView.findViewById(R.id.progressBar);
+            cardView = itemView.findViewById(R.id.bookADPcardView);
         }
     }
 }
