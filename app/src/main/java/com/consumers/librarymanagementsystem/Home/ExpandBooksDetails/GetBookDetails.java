@@ -45,7 +45,7 @@ public class GetBookDetails extends AppCompatActivity {
         editor = sharedPreferences.edit();
         buyThisBook.setOnClickListener(click -> {
             if(sharedPreferences.contains("contactNumUser")){
-
+                
             }else{
                 AlertDialog.Builder builder = new AlertDialog.Builder(GetBookDetails.this);
                 LinearLayout layout = new LinearLayout(GetBookDetails.this);
