@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.consumers.librarymanagementsystem.Home.BooksAdapter;
-import com.consumers.librarymanagementsystem.Home.HomeScreen;
 import com.consumers.librarymanagementsystem.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
