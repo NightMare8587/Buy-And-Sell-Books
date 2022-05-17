@@ -54,17 +54,14 @@ public class GetBookDetails extends AppCompatActivity {
                 editText.setHint("Enter Number Here");
                 editText.setInputType(InputType.TYPE_CLASS_PHONE);
                 builder.setTitle("Contact").setMessage("You need to add your contact number before purchasing this book");
-                builder.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if(editText.getText().toString().length() == 10){
-                            Toast.makeText(GetBookDetails.this, "Contact Info Saved Successfully", Toast.LENGTH_SHORT).show();
-                            editor.putString("contactNumUser",editText.getText().toString());
-                            editor.apply();
-                        }else
-                            Toast.makeText(GetBookDetails.this, "Enter 10 digit Number", Toast.LENGTH_SHORT).show();
+                builder.setPositiveButton("Proceed", (dialogInterface, i) -> {
+                    if(editText.getText().toString().length() == 10){
+                        Toast.makeText(GetBookDetails.this, "Contact Info Saved Successfully", Toast.LENGTH_SHORT).show();
+                        editor.putString("contactNumUser",editText.getText().toString());
+                        editor.apply();
+                    }else
+                        Toast.makeText(GetBookDetails.this, "Enter 10 digit Number", Toast.LENGTH_SHORT).show();
 
-                    }
                 }).setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss()).create();
                 layout.addView(editText);
                 builder.setView(layout);
