@@ -30,6 +30,7 @@ public class SellYourBooks extends AppCompatActivity {
     FloatingActionButton floatingActionButton;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     List<String> bookName = new ArrayList<>();
+    List<String> orders = new ArrayList<>();
     List<String> bookGenre = new ArrayList<>();
     List<String> bookPrice = new ArrayList<>();
     List<String> purchaseCount = new ArrayList<>();
@@ -49,11 +50,15 @@ public class SellYourBooks extends AppCompatActivity {
                         bookName.add(dataSnapshot.getKey());
                         bookPrice.add(String.valueOf(dataSnapshot.child("price").getValue()));
                         purchaseCount.add(String.valueOf(dataSnapshot.child("purchasedCount").getValue()));
+                        if(dataSnapshot.hasChild("Orders")){
+                            orders.add("1");
+                        }else
+                            orders.add("0");
                         bookGenre.add(String.valueOf(dataSnapshot.child("genre").getValue()));
                         imageUri.add(String.valueOf(dataSnapshot.child("imageUri").getValue()));
                     }
                     recyclerView.setLayoutManager(new LinearLayoutManager(SellYourBooks.this));
-                    recyclerView.setAdapter(new Adap(bookName,bookGenre,bookPrice,purchaseCount,imageUri));
+                    recyclerView.setAdapter(new Adap(bookName,bookGenre,bookPrice,purchaseCount,imageUri,orders));
                 }else
                     Toast.makeText(SellYourBooks.this, "No Sold Books available", Toast.LENGTH_SHORT).show();
             }

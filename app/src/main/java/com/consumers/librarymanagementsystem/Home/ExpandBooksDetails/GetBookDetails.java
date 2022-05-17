@@ -1,5 +1,6 @@
 package com.consumers.librarymanagementsystem.Home.ExpandBooksDetails;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +18,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.consumers.librarymanagementsystem.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 public class GetBookDetails extends AppCompatActivity {
@@ -24,6 +31,7 @@ public class GetBookDetails extends AppCompatActivity {
     Button buyThisBook;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
     ImageView imageView;
     @SuppressLint("SetTextI18n")
     @Override
@@ -45,7 +53,32 @@ public class GetBookDetails extends AppCompatActivity {
         editor = sharedPreferences.edit();
         buyThisBook.setOnClickListener(click -> {
             if(sharedPreferences.contains("contactNumUser")){
-                
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().getRoot().child("Users").child(getIntent().getStringExtra("sellerID")).child("My Books").child(getIntent().getStringExtra("bookName")).child("Orders");
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            if(snapshot.hasChild(auth.getUid())){
+                                Toast.makeText(GetBookDetails.this, "You have already placed order for this book", Toast.LENGTH_SHORT).show();
+                            }else{
+                                BuyBookClass buyBookClass = new BuyBookClass(sharedPreferences.getString("name",""),auth.getUid() + "",sharedPreferences.getString("contactNumUser",""));
+                                databaseReference.child(auth.getUid()).setValue(buyBookClass);
+                                Toast.makeText(GetBookDetails.this, "Order Placed Successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            BuyBookClass buyBookClass = new BuyBookClass(sharedPreferences.getString("name",""),auth.getUid() + "",sharedPreferences.getString("contactNumUser",""));
+                            databaseReference.child(auth.getUid()).setValue(buyBookClass);
+                            Toast.makeText(GetBookDetails.this, "Order Placed Successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                BuyBookClass buyBookClass = new BuyBookClass(sharedPreferences.getString("name",""),String.valueOf(auth.getUid()),sharedPreferences.getString("contactNumUser",""));
+
             }else{
                 AlertDialog.Builder builder = new AlertDialog.Builder(GetBookDetails.this);
                 LinearLayout layout = new LinearLayout(GetBookDetails.this);

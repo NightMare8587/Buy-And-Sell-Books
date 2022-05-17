@@ -21,6 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
+            android:name=".Home.SellBooks.Sell.ExpandSellBookActivity"
+            android:exported="false" />
+        <activity
             android:name=".Home.ExpandBooksDetails.GetBookDetails"
             android:exported="false" />
         <activity
