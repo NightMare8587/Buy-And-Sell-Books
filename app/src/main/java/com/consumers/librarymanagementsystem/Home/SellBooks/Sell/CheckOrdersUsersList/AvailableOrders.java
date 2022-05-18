@@ -44,7 +44,7 @@ public class AvailableOrders extends AppCompatActivity {
                     buyerContactNum.add(dataSnapshot.child("buyerContactNum").getValue(String.class));
                 }
                 recyclerView.setLayoutManager(new LinearLayoutManager(AvailableOrders.this));
-                recyclerView.setAdapter(new showAdapterOrders(buyerID,buyerName,buyerContactNum));
+                recyclerView.setAdapter(new showAdapterOrders(buyerID,buyerName,buyerContactNum,getIntent().getStringExtra("bookName")));
 //                Toast.makeText(AvailableOrders.this, "" + buyerID.toString(), Toast.LENGTH_SHORT).show();
                 Log.d("infoses",buyerContactNum.toString() + "\n" + buyerID.toString());
             }

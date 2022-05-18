@@ -17,6 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.consumers.librarymanagementsystem.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +33,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 public class GetBookDetails extends AppCompatActivity {
     TextView bookName,bookGenre,publsihed,author,bookPrice;
     Button buyThisBook;
@@ -33,6 +46,7 @@ public class GetBookDetails extends AppCompatActivity {
     SharedPreferences.Editor editor;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     ImageView imageView;
+    String URL = "https://fcm.googleapis.com/fcm/send";
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +74,35 @@ public class GetBookDetails extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()){
-                            if(snapshot.hasChild(auth.getUid())){
+                            if(snapshot.hasChild(Objects.requireNonNull(auth.getUid()))){
                                 Toast.makeText(GetBookDetails.this, "You have already placed order for this book", Toast.LENGTH_SHORT).show();
                             }else{
+                                RequestQueue requestQueue = Volley.newRequestQueue(GetBookDetails.this);
+                                JSONObject main = new JSONObject();
+                                try {
+                                    main.put("to", "/topics/" + getIntent().getStringExtra("sellerID") + "");
+                                    JSONObject notification = new JSONObject();
+                                    notification.put("title", "Book Order");
+//                                    Toast.makeText(GetBookDetails.this, "" + getIntent().getStringExtra("sellerID"), Toast.LENGTH_SHORT).show();
+                                    notification.put("body", "" + "Order for your book\n" + getIntent().getStringExtra("bookName"));
+                                    main.put("notification", notification);
+
+                                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, main, response -> {
+
+                                    }, error -> Toast.makeText(getApplicationContext(), error.getLocalizedMessage() + "null", Toast.LENGTH_SHORT).show()) {
+                                        @Override
+                                        public Map<String, String> getHeaders() {
+                                            Map<String, String> header = new HashMap<>();
+                                            header.put("content-type", "application/json");
+                                            header.put("authorization", "key=AAAA76i_om0:APA91bF20tIdfXbz_e3Y0-mLOsTsEsz0s-KhxPpOVz7v_Ew3v_IohB9AzwVSDtSQLlfPxgNzH4Vi-vv3tFBYAHxlkpmSEnRgSuxAc1Gyoe8RnDTbiIgDhs52YeoHs_wwK6AcrJrtqXRM");
+                                            return header;
+                                        }
+                                    };
+
+                                    requestQueue.add(jsonObjectRequest);
+                                } catch (Exception e) {
+                                    Toast.makeText(getApplicationContext(), e.getLocalizedMessage() + "null", Toast.LENGTH_SHORT).show();
+                                }
                                 BuyBookClass buyBookClass = new BuyBookClass(sharedPreferences.getString("name",""),auth.getUid() + "",sharedPreferences.getString("contactNumUser",""));
                                 databaseReference.child(auth.getUid()).setValue(buyBookClass);
                                 Toast.makeText(GetBookDetails.this, "Order Placed Successfully", Toast.LENGTH_SHORT).show();
@@ -70,6 +110,32 @@ public class GetBookDetails extends AppCompatActivity {
                                 reference.child(getIntent().getStringExtra("bookName")).child("sellerID").setValue(getIntent().getStringExtra("sellerID"));
                             }
                         }else{
+                            RequestQueue requestQueue = Volley.newRequestQueue(GetBookDetails.this);
+                            JSONObject main = new JSONObject();
+                            try {
+                                main.put("to", "/topics/" + getIntent().getStringExtra("sellerID") + "");
+                                JSONObject notification = new JSONObject();
+                                notification.put("title", "Book Order");
+//                                Toast.makeText(GetBookDetails.this, "" + getIntent().getStringExtra("sellerID"), Toast.LENGTH_SHORT).show();
+                                notification.put("body", "" + "Order for your book\n" + getIntent().getStringExtra("bookName"));
+                                main.put("notification", notification);
+
+                                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, main, response -> {
+
+                                }, error -> Toast.makeText(getApplicationContext(), error.getLocalizedMessage() + "null", Toast.LENGTH_SHORT).show()) {
+                                    @Override
+                                    public Map<String, String> getHeaders() {
+                                        Map<String, String> header = new HashMap<>();
+                                        header.put("content-type", "application/json");
+                                        header.put("authorization", "key=AAAA76i_om0:APA91bF20tIdfXbz_e3Y0-mLOsTsEsz0s-KhxPpOVz7v_Ew3v_IohB9AzwVSDtSQLlfPxgNzH4Vi-vv3tFBYAHxlkpmSEnRgSuxAc1Gyoe8RnDTbiIgDhs52YeoHs_wwK6AcrJrtqXRM");
+                                        return header;
+                                    }
+                                };
+
+                                requestQueue.add(jsonObjectRequest);
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), e.getLocalizedMessage() + "null", Toast.LENGTH_SHORT).show();
+                            }
                             BuyBookClass buyBookClass = new BuyBookClass(sharedPreferences.getString("name",""),auth.getUid() + "",sharedPreferences.getString("contactNumUser",""));
                             databaseReference.child(auth.getUid()).setValue(buyBookClass);
                             Toast.makeText(GetBookDetails.this, "Order Placed Successfully", Toast.LENGTH_SHORT).show();
