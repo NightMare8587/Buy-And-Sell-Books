@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.consumers.librarymanagementsystem.Home.Frags.MyOrders.CheckMyOrders;
 import com.consumers.librarymanagementsystem.Home.SellBooks.Sell.SellYourBooks;
 import com.consumers.librarymanagementsystem.MainActivity;
 import com.consumers.librarymanagementsystem.R;
@@ -93,7 +94,8 @@ public class MyAccountFrag extends Fragment {
                     builder.show();
                     break;
                 case 3:
-
+                    startActivity(new Intent(requireContext(), CheckMyOrders.class));
+                    break;
             }
         });
     }
