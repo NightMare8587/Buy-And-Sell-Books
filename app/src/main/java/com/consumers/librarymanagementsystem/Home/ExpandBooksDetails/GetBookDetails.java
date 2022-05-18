@@ -64,11 +64,16 @@ public class GetBookDetails extends AppCompatActivity {
                                 BuyBookClass buyBookClass = new BuyBookClass(sharedPreferences.getString("name",""),auth.getUid() + "",sharedPreferences.getString("contactNumUser",""));
                                 databaseReference.child(auth.getUid()).setValue(buyBookClass);
                                 Toast.makeText(GetBookDetails.this, "Order Placed Successfully", Toast.LENGTH_SHORT).show();
+                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().getRoot().child("Users").child(auth.getUid()).child("My Orders Placed");
+                                reference.child(getIntent().getStringExtra("bookName")).child("sellerID").setValue(getIntent().getStringExtra("sellerID"));
                             }
                         }else{
                             BuyBookClass buyBookClass = new BuyBookClass(sharedPreferences.getString("name",""),auth.getUid() + "",sharedPreferences.getString("contactNumUser",""));
                             databaseReference.child(auth.getUid()).setValue(buyBookClass);
                             Toast.makeText(GetBookDetails.this, "Order Placed Successfully", Toast.LENGTH_SHORT).show();
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().getRoot().child("Users").child(auth.getUid()).child("My Orders Placed");
+                            reference.child(getIntent().getStringExtra("bookName")).child("sellerID").setValue(getIntent().getStringExtra("sellerID"));
+                            
                         }
                     }
 

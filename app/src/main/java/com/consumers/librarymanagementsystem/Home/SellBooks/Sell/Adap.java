@@ -1,16 +1,22 @@
 package com.consumers.librarymanagementsystem.Home.SellBooks.Sell;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.consumers.librarymanagementsystem.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -53,6 +59,31 @@ public class Adap extends RecyclerView.Adapter<Adap.Holder> {
             holder.ordersText.setVisibility(View.INVISIBLE);
 
 
+        holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setTitle("Dialog").setMessage("Choose one option from below").setPositiveButton("Delete Book", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().getRoot().child("Users").child(auth.getUid()).child("My Books").child(bookName.get(position));
+                        databaseReference.removeValue();
+                        databaseReference = FirebaseDatabase.getInstance().getReference().getRoot().child("BooksDatabase").child(bookGenre.get(position)).child(bookName.get(position));
+                        databaseReference.removeValue();
+                        Toast.makeText(view.getContext(), "Book Removed Successfully", Toast.LENGTH_SHORT).show();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                }).create();
+                builder.show();
+                return true;
+            }
+        });
         holder.cardView.setOnClickListener(click -> {
             if(orders.get(position).equals("1")){
                 Intent intent = new Intent(click.getContext(),ExpandSellBookActivity.class);

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.consumers.librarymanagementsystem.Home.SellBooks.Sell.CheckOrdersUsersList.AvailableOrders;
 import com.consumers.librarymanagementsystem.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +46,10 @@ public class ExpandSellBookActivity extends AppCompatActivity {
             checkOrders.setVisibility(View.VISIBLE);
         else checkOrders.setVisibility(View.INVISIBLE);
         Picasso.get().load(getIntent().getStringExtra("imageUri")).into(imageView);
+
+        checkOrders.setOnClickListener(click -> {
+            startActivity(new Intent(ExpandSellBookActivity.this, AvailableOrders.class));
+        });
 
 
         changeBookDetails.setOnClickListener(view -> {
