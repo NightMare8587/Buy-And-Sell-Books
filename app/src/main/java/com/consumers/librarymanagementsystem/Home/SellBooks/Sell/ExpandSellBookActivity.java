@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.consumers.librarymanagementsystem.Home.Frags.MyOrders.CheckMyOrders;
 import com.consumers.librarymanagementsystem.Home.SellBooks.Sell.CheckOrdersUsersList.AvailableOrders;
 import com.consumers.librarymanagementsystem.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,7 +49,9 @@ public class ExpandSellBookActivity extends AppCompatActivity {
         Picasso.get().load(getIntent().getStringExtra("imageUri")).into(imageView);
 
         checkOrders.setOnClickListener(click -> {
-            startActivity(new Intent(ExpandSellBookActivity.this, AvailableOrders.class));
+            Intent intent = new Intent(ExpandSellBookActivity.this, AvailableOrders.class);
+            intent.putExtra("bookName",getIntent().getStringExtra("bookName"));
+            startActivity(intent);
         });
 
 

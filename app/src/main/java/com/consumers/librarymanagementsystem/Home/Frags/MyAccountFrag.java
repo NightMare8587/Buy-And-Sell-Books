@@ -49,6 +49,7 @@ public class MyAccountFrag extends Fragment {
         list.add("Sell Books");
         list.add("My Preferences");
         list.add("Logout");
+        list.add("My Orders");
         listView = view.findViewById(R.id.myAccountListView);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1,list);
         listView.setAdapter(arrayAdapter);
@@ -91,6 +92,8 @@ public class MyAccountFrag extends Fragment {
 
                     builder.show();
                     break;
+                case 3:
+
             }
         });
     }

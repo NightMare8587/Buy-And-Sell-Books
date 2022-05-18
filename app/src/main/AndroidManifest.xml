@@ -21,6 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
+            android:name=".Home.Frags.MyOrders.CheckMyOrders"
+            android:exported="false" />
+        <activity
             android:name=".Home.Frags.ChangeUserPrefrences"
             android:exported="false" />
         <activity
