@@ -66,7 +66,10 @@ public class showAdapterOrders extends RecyclerView.Adapter<showAdapterOrders.ho
                 notification.put("title", "Order Accepted");
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().getRoot().child("Users").child(auth.getUid()).child("My Books").child(bookName).child("Orders");
+
                 databaseReference.child(buyerID.get(position)).removeValue();
+                databaseReference = FirebaseDatabase.getInstance().getReference().getRoot().child("Users").child(buyerID.get(position)).child("My Orders Placed");
+                databaseReference.child(bookName).removeValue();
 //                                    Toast.makeText(GetBookDetails.this, "" + getIntent().getStringExtra("sellerID"), Toast.LENGTH_SHORT).show();
                 notification.put("body", "" + "Order for your book " + bookName +" is accepted");
                 main.put("notification", notification);
@@ -106,6 +109,8 @@ public class showAdapterOrders extends RecyclerView.Adapter<showAdapterOrders.ho
                         FirebaseAuth auth = FirebaseAuth.getInstance();
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().getRoot().child("Users").child(auth.getUid()).child("My Books").child(bookName).child("Orders");
                         databaseReference.child(buyerID.get(position)).removeValue();
+                        databaseReference = FirebaseDatabase.getInstance().getReference().getRoot().child("Users").child(buyerID.get(position)).child("My Orders Placed");
+                        databaseReference.child(bookName).removeValue();
                         RequestQueue requestQueue = Volley.newRequestQueue(click.getContext());
                         JSONObject main = new JSONObject();
                         try {
