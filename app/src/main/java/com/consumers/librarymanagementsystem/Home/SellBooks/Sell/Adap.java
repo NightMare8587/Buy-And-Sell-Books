@@ -60,6 +60,15 @@ public class Adap extends RecyclerView.Adapter<Adap.Holder> {
                 intent.putExtra("bookGenre",bookGenre.get(position));
                 intent.putExtra("imageUri",imageUri.get(position));
                 intent.putExtra("purchase",purchaseCount.get(position));
+                intent.putExtra("orderAvailable","1");
+                click.getContext().startActivity(intent);
+            }else{
+                Intent intent = new Intent(click.getContext(),ExpandSellBookActivity.class);
+                intent.putExtra("bookName",bookName.get(position));
+                intent.putExtra("bookGenre",bookGenre.get(position));
+                intent.putExtra("imageUri",imageUri.get(position));
+                intent.putExtra("purchase",purchaseCount.get(position));
+                intent.putExtra("orderAvailable","0");
                 click.getContext().startActivity(intent);
             }
         });

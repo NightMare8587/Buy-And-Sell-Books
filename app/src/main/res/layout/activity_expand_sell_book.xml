@@ -8,10 +8,11 @@
 
     <ImageView
         android:id="@+id/imageViewExpandSellBooks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -24,6 +25,7 @@
         android:layout_marginTop="10dp"
         android:text="TextView"
         android:textColor="#000000"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewExpandSellBooks"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="9dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="4dp"
         android:text="TextView"
         android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/imageViewExpandSellBooks"
@@ -48,4 +50,14 @@
         android:text="Check Orders"
         app:layout_constraintStart_toEndOf="@+id/imageViewExpandSellBooks"
         app:layout_constraintTop_toBottomOf="@+id/bookGenreExpandSellBook" />
+
+    <Button
+        android:id="@+id/changeBookDetailsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Change Book Details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkAvailableOrders" />
 </androidx.constraintlayout.widget.ConstraintLayout>
