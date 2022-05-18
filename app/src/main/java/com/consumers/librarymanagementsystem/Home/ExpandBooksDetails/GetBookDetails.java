@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 public class GetBookDetails extends AppCompatActivity {
-    TextView bookName,bookGenre,publsihed,author;
+    TextView bookName,bookGenre,publsihed,author,bookPrice;
     Button buyThisBook;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -40,6 +40,8 @@ public class GetBookDetails extends AppCompatActivity {
         setContentView(R.layout.activity_get_book_details);
         bookName = findViewById(R.id.bookDetialsBookName);
         bookGenre = findViewById(R.id.bookDetailsGenre);
+        bookPrice = findViewById(R.id.bookPriceGetDetails);
+        bookPrice.setText("(\u20B9" + getIntent().getStringExtra("price") + ")");
         publsihed = findViewById(R.id.publisherBookDetails);
         buyThisBook = findViewById(R.id.BuyBookNowButton);
         author = findViewById(R.id.authorNameBookDetails);
@@ -73,7 +75,7 @@ public class GetBookDetails extends AppCompatActivity {
                             Toast.makeText(GetBookDetails.this, "Order Placed Successfully", Toast.LENGTH_SHORT).show();
                             DatabaseReference reference = FirebaseDatabase.getInstance().getReference().getRoot().child("Users").child(auth.getUid()).child("My Orders Placed");
                             reference.child(getIntent().getStringExtra("bookName")).child("sellerID").setValue(getIntent().getStringExtra("sellerID"));
-                            
+
                         }
                     }
 

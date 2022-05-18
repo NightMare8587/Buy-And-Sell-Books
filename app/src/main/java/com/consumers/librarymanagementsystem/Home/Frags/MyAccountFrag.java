@@ -63,7 +63,7 @@ public class MyAccountFrag extends Fragment {
                     startActivity(new Intent(view.getContext(), SellYourBooks.class));
                     break;
                 case 1:
-                    Toast.makeText(view1.getContext(), "My Pref", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(view.getContext(),ChangeUserPrefrences.class));
                     break;
                 case 2:
                     AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
